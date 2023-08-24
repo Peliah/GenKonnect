@@ -2,22 +2,15 @@ import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import Home from './src/Screens/Home';
+import { AuthContextProvider } from './src/context/AuthContext';
+import AuthStack from './src/Navigation/AuthStack';
+import AppStack from './src/Navigation/AppStack';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Home/>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <AuthContextProvider>
+        <AppStack/>
+    </AuthContextProvider>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#0074d9',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
