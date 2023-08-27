@@ -1,9 +1,12 @@
 import { StyleSheet, Text, View, KeyboardAvoidingView, Dimensions, Platform, ScrollView, TextInput, TouchableOpacity,Image } from 'react-native'
-import React, {useState} from 'react'
+import React, {useContext, useState} from 'react'
 import { isValidEmail, isValidObjField, updateError } from '../components/Method'
 // import NicerImage from './../assets/images/light-bulb-animate.svg'
 import FormButton from '../components/formComponents/FormButton'
+import { AuthContext } from '../context/AuthContext'
 const Login = ({navigation}) => {
+
+  const {login} = useContext(AuthContext)
   //importing the image
   const niceImage = require('./../assets/images/Lightbulb-bro.png')
   const [userInfo, setUserInfo] = useState({
@@ -36,6 +39,7 @@ const Login = ({navigation}) => {
       {console.log('Form Submitted')
     console.log(userInfo.password)
     console.log(userInfo.email)
+    login();
     }
     else
       {console.log('You suck')}

@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
         flex:1,
         alignItems: 'center',
         width:'100%',
-            // justifyContent:'center',
+            justifyContent:'center',
         // width:'80%'
     },
     loginLabel:{
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
       fontSize: 16,
       paddingLeft: 20,
       paddingVertical:5,
-      width:'80%'
+      width:'100%'
     },
     // btn: {
         //   height: 45,
@@ -130,9 +130,9 @@ const styles = StyleSheet.create({
         fields:{
             // alignItems:'center',
             flex:1,
-            alignItems: 'center',
+            // alignItems: 'center',
             justifyContent:'center',
-      width:'100%',
+      width:'80%',
   
     },
     signup:{
