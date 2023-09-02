@@ -1,12 +1,14 @@
 import { StyleSheet, Text, View, KeyboardAvoidingView, Dimensions, Platform, ScrollView, TextInput, TouchableOpacity,Image } from 'react-native'
 import React, {useContext, useState} from 'react'
 import { isValidEmail, isValidObjField, updateError } from '../components/Method'
-// import NicerImage from './../assets/images/light-bulb-animate.svg'
 import FormButton from '../components/formComponents/FormButton'
 import { AuthContext } from '../context/AuthContext'
-const Login = ({navigation}) => {
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import Client from '../api/Client'
 
-  const {login} = useContext(AuthContext)
+const Login = () => {
+
+  const {login, setAuthData, authData, setUserToken, userToken} = useContext(AuthContext)
   //importing the image
   const niceImage = require('./../assets/images/Lightbulb-bro.png')
   const [userInfo, setUserInfo] = useState({
@@ -34,25 +36,59 @@ const Login = ({navigation}) => {
     return true;
   };
 
-  const submitForm = async ()=>{
-    if(isValidForm())
-      {console.log('Form Submitted')
-    console.log(userInfo.password)
-    console.log(userInfo.email)
-    login();
+  const submitForm = async () => {
+
+    if (isValidForm()) {
+        // await Client.post('/sign-in', { ...userInfo })
+        // .then(
+        //   res =>{
+            console.log('Form Submitted')
+            console.log(userInfo.password)
+            console.log(userInfo.email)
+            login()
+            // console.log(res.data);
+            // setAuthData(res.data)
+            // setUserToken(authData.token)
+
+            // AsyncStorage.setItem('authData', JSON.stringify(authData))
+            // AsyncStorage.setItem('userToken', userToken)
+        //   }
+        // )
+        // .catch (e => {
+        //   console.log('login error' + e)
+        // })
     }
-    else
-      {console.log('You suck')}
-  }
+  };
+
+  // const submitForm = async () => {
+
+  //   if (isValidForm()) {
+  //       await Client.post('/sign-in', { ...userInfo })
+  //       .then(
+  //         res =>{
+  //           console.log('Form Submitted')
+  //           console.log(userInfo.password)
+  //           console.log(userInfo.email)
+
+  //           console.log(res.data);
+  //           setAuthData(res.data)
+  //           setUserToken(authData.token)
+
+  //           AsyncStorage.setItem('authData', JSON.stringify(authData))
+  //           AsyncStorage.setItem('userToken', userToken)
+  //         }
+  //       )
+  //       .catch (e => {
+  //         console.log('login error' + e)
+  //       })
+  //   }
+  // };
 
   return (
     <KeyboardAvoidingView enabled={true}  style={styles.container}>
-      {/* <ScrollView showsVerticalScrollIndicator={false} style={{paddingBottom:20}}> */}
-        {/* This is the text error message */}
-        {/* {error ? ( <Text style={{ color: 'red', fontSize: 16, textAlign: 'center' }}>{error} </Text>) : null} */}
 
         
-        <View>
+        <View style={{marginBottom:20}}>
           <Image source={niceImage}  style={{width:300, height:300}}/>
           {/* <NicerImage/> */}
         </View>
@@ -71,15 +107,15 @@ const Login = ({navigation}) => {
             {/* <Text style={{ fontWeight: 'bold' }}>Password</Text> */}
             {error ? (<Text style={{ color: 'red', fontSize: 10 }}>{error}</Text>) : null}
           </View>
+          <View style={{marginVertical:15}}>
+            <FormButton onPress={submitForm} title={'Login'}/>
+          </View>
           
           {/* Submit button */}
-          <FormButton onPress={submitForm} title={'Login'}/>
         </View>
 
       {/* </ScrollView> */}
-      <Text style={styles.signup} onPress={()=>{navigation.push('Register')}}>
-        Don't have an account? Sign Up here!
-      </Text>
+     
     </KeyboardAvoidingView>
   )
 }
