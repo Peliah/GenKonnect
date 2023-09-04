@@ -7,50 +7,63 @@ import Client from './../../api/Client'
 const BigButton = () => {
   const [isOn, setIsOn] = useState(false);
 
+  //for the timer
+  const [running, setRunning] = useState(false)
+  const [time, setTime] = useState(0)
+
+
+
   useEffect(() => {
-    // Fetch the current state from the API when the component mounts
     async function fetchCurrentState() {
       try {
         const response = await Client.get('/get-button-state');
-        // Assuming the API returns a boolean value, update the state
         setIsOn(response.data);
       } catch (error) {
         // Handle errors
       }
     }
 
-    fetchCurrentState();
+    fetchCurrentState();   
   }, []);
 
 
   const toggleSwitch = async () => {
-    // Toggle the state
     setIsOn(!isOn);
-
-    // Send a 1 or 0 to the API
     const apiValue = isOn ? 1 : 0;
-
-    // Replace 'your-api-endpoint' with your actual API endpoint
     try {
       const response = await Client.post('/button', { value: apiValue });
-      // Handle API response if needed
     } catch (error) {
       // Handle errors
     }
   };
 
+  const startStop = () => {
+    setRunning(!running);
+  };
+
+  const reset = () => {
+    setRunning(false);
+    setTime(0);
+  };
+
+  const formatTime = (seconds) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds = seconds % 60;
+    return `${hours}:${minutes < 10 ? '0' : ''}${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+  };
+
   return (
-    <TouchableOpacity onPress={toggleSwitch} style={styles.toggleButton}>
-      <View
-        style={[
-          styles.toggleButton,
-        //   isOn ? styles.toggleOn : styles.toggleOff,
-        ]}
-      >
-        {/* <Text style={styles.toggleText}>{isOn ? 'ON' : 'OFF'}</Text> */}
-        <Icon name='power-outline' size={100} color={isOn ? '#0074d9' : 'grey'}/>
-      </View>
-    </TouchableOpacity>
+    <View
+    style={[
+        styles.toggleButtonGroup
+    ]}
+    >
+        <TouchableOpacity onPress={toggleSwitch} style={styles.toggleButton}>
+        <Icon name='power' size={100} color={isOn ? '#0074d9' : 'grey'}/>
+        </TouchableOpacity>
+        <Text style={[styles.timer, isOn ? styles.toggleOn : styles.toggleOff]}>{formatTime(time)}</Text>
+    </View>
   );
 };
 
@@ -61,23 +74,26 @@ const styles = StyleSheet.create({
     borderRadius: 150, // Make it round
     alignItems: 'center',
     justifyContent: 'center',
-    // borderWidth: 2,
     backgroundColor:'#fff',
-    elevation:3
+    elevation:5
   },
   toggleOn: {
-    backgroundColor: 'red', // Color when ON
-    // borderColor: 'white', // Border color when ON
+    color: '#0074d9', // Color when ON 
   },
   toggleOff: {
-    backgroundColor: 'white', // Color when OFF
-    // borderColor: 'red', // Border color when OFF
+    color: 'grey', // Color when OFF 
   },
   toggleText: {
-    // color: 'black', // Text color
-    // fontSize: 16,
-    // fontWeight: 'bold',
   },
+  toggleButtonGroup:{
+    alignItems:'center',
+    justifyContent:'center',
+  },
+  timer:{
+    fontSize:40,
+    fontWeight:'400',
+    margin:20
+  }
 });
 
 export default BigButton;

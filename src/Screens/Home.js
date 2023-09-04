@@ -20,6 +20,7 @@ const Home = () => {
         {/* <Image source={construction}  style={{width:300, height:300}}/> */}
         {/* <TouchableOpacity onPress={()=>{logout()}}><Text>Logout</Text></TouchableOpacity> */}
       </View>
+      
     </View>
   )
 }
