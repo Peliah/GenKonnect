@@ -6,16 +6,15 @@ import HomePageModal from '../components/HomeComponents/HomePageModal'
 import BigButton from '../components/HomeComponents/BigButton'
 
 const Home = () => {
-  const construction = require('./../assets/images/Underconstruction-bro.png')
   return (
     <View style={styles.contain}>
       <Header/>
-      <View style={styles.modals}>
+      {/* <View style={styles.modals}>
         <HomePageModal/>
         <HomePageModal/>
         <HomePageModal/>
         <HomePageModal/>
-      </View>
+      </View> */}
       <View style={styles.container}>
         <BigButton/>
         {/* <Image source={construction}  style={{width:300, height:300}}/> */}
@@ -46,6 +45,7 @@ const styles = StyleSheet.create({
     flexDirection:'row',
     // alignItems:'center',
     // justifyContent: 'space-between',
+    // marginHorizontal:10
     // backgroundColor:'blue',
 
   }

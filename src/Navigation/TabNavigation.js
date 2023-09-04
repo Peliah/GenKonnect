@@ -20,7 +20,7 @@ const TabNavigation = () => {
           } else if (route.name === 'Profile') {
             iconName = focused ? 'person' : 'person-outline';
           } else if (route.name === 'Analytics') {
-            iconName = focused ? 'settings' : 'settings-outline';
+            iconName = focused ? 'bar-chart' : 'bar-chart-outline';
           }
 
           return <Icon name={iconName} size={size} color={color} />;

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons'
 // import axios from 'axios';
 import Client from './../../api/Client'
 
@@ -39,14 +40,15 @@ const BigButton = () => {
   };
 
   return (
-    <TouchableOpacity onPress={toggleSwitch}>
+    <TouchableOpacity onPress={toggleSwitch} style={styles.toggleButton}>
       <View
         style={[
           styles.toggleButton,
-          isOn ? styles.toggleOn : styles.toggleOff,
+        //   isOn ? styles.toggleOn : styles.toggleOff,
         ]}
       >
-        <Text style={styles.toggleText}>{isOn ? 'ON' : 'OFF'}</Text>
+        {/* <Text style={styles.toggleText}>{isOn ? 'ON' : 'OFF'}</Text> */}
+        <Icon name='power-outline' size={100} color={isOn ? '#0074d9' : 'grey'}/>
       </View>
     </TouchableOpacity>
   );
@@ -60,7 +62,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     // borderWidth: 2,
-    elevation:5
+    backgroundColor:'#fff',
+    elevation:3
   },
   toggleOn: {
     backgroundColor: 'red', // Color when ON

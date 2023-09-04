@@ -23,14 +23,14 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         alignItems: 'center',
         // borderRadius:20,
-        backgroundColor:'#f9ea08',
+        backgroundColor:'#fff',
         paddingVertical:20,
 
     },
     viewImg:{
         backgroundColor: '#0074d9',
-        width:45,
-        height:45,
+        width:60,
+        height:60,
         borderRadius:10
 
     },

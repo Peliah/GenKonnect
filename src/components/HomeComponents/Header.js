@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native'
+import Icon from 'react-native-vector-icons/Ionicons'
 import React from 'react'
 
 const Header = () => {
@@ -12,7 +13,7 @@ const Header = () => {
             {/* <Text>Header</Text> */}
         </View>
         <View>
-            <Text>ICON</Text>
+            <Icon name='ellipsis-vertical-outline' size={30}/>
         </View>
     </View>
   )
@@ -25,7 +26,7 @@ const styles = StyleSheet.create({
         // flex:1,
         paddingTop:50,
         paddingBottom:20,
-        backgroundColor:"#f9ea08",
+        backgroundColor:"#fff",
         paddingHorizontal: 15,
         flexDirection:"row",
         alignItems:"center",
