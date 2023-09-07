@@ -29,7 +29,11 @@ const TabNavigation = () => {
         "tabBarInactiveTintColor": "gray",
         "tabBarStyle": [
             {
-            "display": "flex"
+            "display": "flex",
+            "margin":5,
+            height:50,
+            // padding:-12,
+            borderRadius:10
             },
             null
         ]

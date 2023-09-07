@@ -22,15 +22,28 @@ const BigButton = () => {
         // Handle errors
       }
     }
-
+    
+    let interval;
+    if (running) {
+        interval = setInterval(() => {
+            setTime((prevTime) => prevTime + 1);
+        }, 1000);
+    } else {
+        clearInterval(interval);
+    }
     fetchCurrentState();   
-  }, []);
+    return () => clearInterval(interval);
+
+  }, [running]);
 
 
   const toggleSwitch = async () => {
     setIsOn(!isOn);
-    const apiValue = isOn ? 1 : 0;
+    // startStop()
+    isOn ? reset():startStop()
+    const apiValue = isOn ? 0 : 1;
     try {
+        console.log(apiValue)
       const response = await Client.post('/button', { value: apiValue });
     } catch (error) {
       // Handle errors
@@ -63,6 +76,14 @@ const BigButton = () => {
         <Icon name='power' size={100} color={isOn ? '#0074d9' : 'grey'}/>
         </TouchableOpacity>
         <Text style={[styles.timer, isOn ? styles.toggleOn : styles.toggleOff]}>{formatTime(time)}</Text>
+        <View style={styles.status}>
+            <Text>Status</Text>
+            <View style={styles.connected}>
+                <Text>
+                    {isOn ? 'Is Running' : 'Not Running'}
+                </Text>
+            </View>
+        </View>
     </View>
   );
 };
@@ -71,17 +92,17 @@ const styles = StyleSheet.create({
   toggleButton: {
     width: 250,
     height: 250,
-    borderRadius: 150, // Make it round
+    borderRadius: 150, // Make it round 
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor:'#fff',
     elevation:5
   },
   toggleOn: {
-    color: '#0074d9', // Color when ON 
+    color: '#0074d9',
   },
   toggleOff: {
-    color: 'grey', // Color when OFF 
+    color: 'grey', 
   },
   toggleText: {
   },
@@ -92,7 +113,18 @@ const styles = StyleSheet.create({
   timer:{
     fontSize:40,
     fontWeight:'400',
-    margin:20
+    margin:20,
+    elevation:3
+  },
+  status:{
+    alignItems:'center',
+    justifyContent:'center'
+  },
+  connected:{
+    borderRadius:30,
+    backgroundColor:'#0074d9',
+    padding:15,
+    paddingHorizontal:40
   }
 });
 

@@ -5,8 +5,8 @@ import React from 'react'
 const Header = () => {
   return (
     <View style={styles.container}>
-        <View style={{backgroundColor:"#0074d9", borderRadius:50, width:40, height:40}}>
-            <Text>IMAGE</Text>
+        <View style={{borderRadius:50, width:35, height:35, alignItems:'center', justifyContent:'center', borderWidth:1}}>
+            <Icon name='person-outline' color={'grey'} size={30}/>
         </View>
         <View>
             <Text style={styles.title}>Header</Text>
