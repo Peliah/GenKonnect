@@ -4,6 +4,7 @@ import React from 'react'
 import Header from '../components/HomeComponents/Header'
 // import HomePageModal from '../components/HomeComponents/HomePageModal'
 import BigButton from '../components/HomeComponents/BigButton'
+import GenData from '../components/HomeComponents/GenData'
 
 const Home = () => {
   return (
@@ -17,6 +18,7 @@ const Home = () => {
         {/* <Image source={construction}  style={{width:300, height:300}}/> */}
         {/* <TouchableOpacity onPress={()=>{logout()}}><Text>Logout</Text></TouchableOpacity> */}
       </View>
+      <GenData/>
       
     </View>
   )

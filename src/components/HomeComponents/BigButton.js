@@ -16,7 +16,7 @@ const BigButton = () => {
   useEffect(() => {
     async function fetchCurrentState() {
       try {
-        const response = await Client.get('/get-button-state');
+        const response = await Client.get('/change');
         setIsOn(response.data);
       } catch (error) {
         // Handle errors
@@ -44,9 +44,10 @@ const BigButton = () => {
     const apiValue = isOn ? 0 : 1;
     try {
         console.log(apiValue)
-      const response = await Client.post('/button', { value: apiValue });
+      const response = await Client.post('/change', { state: apiValue });
     } catch (error) {
       // Handle errors
+      console.log(error)
     }
   };
 
@@ -114,7 +115,7 @@ const styles = StyleSheet.create({
     fontSize:40,
     fontWeight:'400',
     margin:20,
-    elevation:3
+    // elevation:3
   },
   status:{
     alignItems:'center',

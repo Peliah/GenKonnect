@@ -1,3 +1,3 @@
 import axios from "axios";
 
-export default axios.create({baseURL: 'https://dummyjson.com'})
+export default axios.create({baseURL: 'http://172.20.10.2:5000'})
