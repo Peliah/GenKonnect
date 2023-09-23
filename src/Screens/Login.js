@@ -8,16 +8,16 @@ import Client from '../api/Client'
 
 const Login = () => {
 
-  const {login, setAuthData, authData, setUserToken, userToken} = useContext(AuthContext)
+  const {login, setAuthData, authData, setUserToken, userToken, setIsGen, isGen} = useContext(AuthContext)
   //importing the image
   const niceImage = require('./../assets/images/Lightbulb-bro.png')
   const [userInfo, setUserInfo] = useState({
-    email:'',
-    password:'',
+    Email:'',
+    Password:'',
   })
 
   const [error, setError] = useState('')
-  const { email, password } = userInfo;
+  const { Email, Password } = userInfo;
   //on text change
   const handleOnChangeText = (value, fieldName) => {
     setUserInfo({ ...userInfo, [fieldName]: value });
@@ -28,61 +28,69 @@ const Login = () => {
     if (!isValidObjField(userInfo))
       return updateError('Required all fields!', setError);
 
-    if (!isValidEmail(email)) return updateError('Invalid email!', setError);
+    if (!isValidEmail(Email)) return updateError('Invalid Email!', setError);
 
-    if (!password.trim() || password.length < 8)
+    if (!Password.trim() || Password.length < 5)
       return updateError('Password is too short!', setError);
 
     return true;
   };
 
-  const submitForm = async () => {
-
-    if (isValidForm()) {
-        // await Client.post('/sign-in', { ...userInfo })
-        // .then(
-        //   res =>{
-            console.log('Form Submitted')
-            console.log(userInfo.password)
-            console.log(userInfo.email)
-            login()
-            // console.log(res.data);
-            // setAuthData(res.data)
-            // setUserToken(authData.token)
-
-            // AsyncStorage.setItem('authData', JSON.stringify(authData))
-            // AsyncStorage.setItem('userToken', userToken)
-        //   }
-        // )
-        // .catch (e => {
-        //   console.log('login error' + e)
-        // })
-    }
-  };
-
   // const submitForm = async () => {
 
   //   if (isValidForm()) {
-  //       await Client.post('/sign-in', { ...userInfo })
-  //       .then(
-  //         res =>{
+  //       // await Client.post('/sign-in', { ...userInfo })
+  //       // .then(
+  //       //   res =>{
   //           console.log('Form Submitted')
-  //           console.log(userInfo.password)
-  //           console.log(userInfo.email)
+  //           // console.log(userInfo.Password)
+  //           // console.log(userInfo.Email)
+  //           login()
+  //           setAuthData(userInfo)
 
-  //           console.log(res.data);
-  //           setAuthData(res.data)
-  //           setUserToken(authData.token)
+  //           console.log(authData)
+  //           // console.log(userInfo)
+  //           // console.log(res.data);
+  //           // setAuthData(res.data)
+  //           // setUserToken(authData.token)
 
-  //           AsyncStorage.setItem('authData', JSON.stringify(authData))
-  //           AsyncStorage.setItem('userToken', userToken)
-  //         }
-  //       )
-  //       .catch (e => {
-  //         console.log('login error' + e)
-  //       })
+  //           // AsyncStorage.setItem('authData', JSON.stringify(authData))
+  //           // AsyncStorage.setItem('userToken', userToken)
+  //       //   }
+  //       // )
+  //       // .catch (e => {
+  //       //   console.log('login error' + e)
+  //       // })
   //   }
   // };
+
+  const submitForm = async () => {
+    if (isValidForm()) {
+      try {
+        const response = await Client.post('/Login', { ...userInfo });
+        
+        if (response.status === 200) {
+          console.log('Form Submitted');
+          console.log(userInfo.Password);
+          console.log(userInfo.Email);
+          console.log(response.data);
+  
+          setAuthData(response.data);
+          setUserToken(response.data.accesstoken);
+          setIsGen(response.data.good.Active);
+  
+          // Store the authentication data and token in AsyncStorage
+          AsyncStorage.setItem('authData', JSON.stringify(response.data));
+          AsyncStorage.setItem('userToken', response.data.accesstoken);
+        } else {
+          console.log('Login failed:', response.data); // Handle login failure
+        }
+      } catch (error) {
+        console.log('Login error:', error);
+      }
+    }
+  };
+  
 
   return (
     <KeyboardAvoidingView enabled={true}  style={styles.container}>
@@ -96,13 +104,13 @@ const Login = () => {
         {/* Inputs */}
         <View style={styles.fields}>
           
-          <TextInput placeholder='Email' value={email} style={styles.input} onChangeText={value => handleOnChangeText(value, 'email')} autoCapitalize='none'/>
+          <TextInput placeholder='Email' value={Email} style={styles.input} onChangeText={value => handleOnChangeText(value, 'Email')} autoCapitalize='none'/>
           <View style={styles.loginLabel}>
             {/* <Text style={{ fontWeight: 'bold' }}>Email</Text> */}
             {error ? (<Text style={{ color: 'red', fontSize: 10 }}>{error}</Text>) : null}
           </View>
           
-          <TextInput placeholder='Password' value={password} style={styles.input} onChangeText={value => handleOnChangeText(value, 'password')} secureTextEntry autoCapitalize='none'/>
+          <TextInput placeholder='Password' value={Password} style={styles.input} onChangeText={value => handleOnChangeText(value, 'Password')} secureTextEntry autoCapitalize='none'/>
           <View style={styles.loginLabel}>
             {/* <Text style={{ fontWeight: 'bold' }}>Password</Text> */}
             {error ? (<Text style={{ color: 'red', fontSize: 10 }}>{error}</Text>) : null}

@@ -8,7 +8,10 @@ export const AuthContext = createContext()
 export const AuthContextProvider = ({ children }) => {
     const [userToken, setUserToken] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
+    const [isGen, setIsGen] = useState(false)
     const [authData, setAuthData] = useState(null)
+
+    
 
     //login setup
     const login = ()=>{
@@ -16,6 +19,7 @@ export const AuthContextProvider = ({ children }) => {
         setUserToken('Hayaaaaaaaaah')
         AsyncStorage.setItem('userToken', 'Hayaaaaaaaaah')
         setIsLoading(false)
+        
         // setAuthData()
     }
 
@@ -43,7 +47,7 @@ export const AuthContextProvider = ({ children }) => {
     }, [])
 
     return (
-        <AuthContext.Provider value={{login, logout, isLoading, userToken, setUserToken, authData, setAuthData}}>
+        <AuthContext.Provider value={{login, logout, isLoading, userToken, setUserToken, authData, setAuthData, isGen, setIsGen}}>
         	{ children }
         </AuthContext.Provider>
     );

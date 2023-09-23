@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'
 // import axios from 'axios';
+import { AuthContext } from '../../context/AuthContext';
 import Client from './../../api/Client'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
 
 const BigButton = () => {
   const [isOn, setIsOn] = useState(false);
-
+  const {authData} = useContext(AuthContext)
   //for the timer
   const [running, setRunning] = useState(false)
   const [time, setTime] = useState(0)
@@ -42,8 +45,12 @@ const BigButton = () => {
     // startStop()
     isOn ? reset():startStop()
     const apiValue = isOn ? 0 : 1;
+    console.log(authData)
     try {
         console.log(apiValue)
+        // console.log(authData.good.Active)
+        const myItem = AsyncStorage.getItem('authData')
+        console.log(authData.good.Email)
       const response = await Client.post('/change', { state: apiValue });
     } catch (error) {
       // Handle errors

@@ -6,12 +6,13 @@ import Header from '../components/HomeComponents/Header'
 import BigButton from '../components/HomeComponents/BigButton'
 import GenData from '../components/HomeComponents/GenData'
 
-const Home = () => {
+const Home = ({route}) => {
+  const {generator} = route.params;
   return (
     <View style={styles.contain}>
       <Header/>
       <View style={styles.modals}>
-        <Text>{'Name of Generator'}</Text>
+        <Text>{generator.name}</Text>
       </View>
       <View style={styles.container}>
         <BigButton/>

@@ -4,6 +4,7 @@ import React from 'react'
 import Home from '../Screens/Home';
 import Profile from '../Screens/Profile';
 import Analytics from '../Screens/Analytics';
+import Dashboard from '../Screens/Dashboard';
 
 const Tab = createBottomTabNavigator();
 
@@ -15,7 +16,7 @@ const TabNavigation = () => {
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
-          if (route.name === 'Home') {
+          if (route.name === 'Dashboard') {
             iconName = focused ? 'home' : 'home-outline';
           } else if (route.name === 'Profile') {
             iconName = focused ? 'person' : 'person-outline';
@@ -30,8 +31,9 @@ const TabNavigation = () => {
         "tabBarStyle": [
             {
             "display": "flex",
-            "margin":5,
-            height:50,
+            // "margin":10,
+            height:60,
+            paddingBottom:5,
             // padding:-12,
             borderRadius:10
             },
@@ -40,7 +42,7 @@ const TabNavigation = () => {
       })}
       >
       {/* <Text>TabNavigation</Text> */}
-      <Tab.Screen name='Home' component={Home}/>
+      <Tab.Screen name='Dashboard' component={Dashboard}/>
       <Tab.Screen name='Analytics' component={Analytics}/>
       <Tab.Screen name='Profile' component={Profile}/>
     </Tab.Navigator>
