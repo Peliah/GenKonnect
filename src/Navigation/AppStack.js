@@ -7,15 +7,15 @@ import Home from '../Screens/Home'
 import Profile from '../Screens/Profile'
 import Analytics from '../Screens/Analytics'
 import TabNavigation from './TabNavigation'
-import {AuthContext} from './../context/AuthContext'
 import SelectOrRegister from '../Screens/SelectOrRegister'
 import Dashboard from '../Screens/Dashboard'
+import Settings from '../Screens/Settings'
 
 
 const AppStack = () => {
     const Stack = createNativeStackNavigator()
 
-    const {isGen} = useContext(AuthContext)
+    // const {isGen} = useContext(AuthContext)
 
     return (
           <NavigationContainer>
@@ -26,6 +26,7 @@ const AppStack = () => {
                 <Stack.Screen name="Profile" component={Profile} />
                 <Stack.Screen name="Analytics" component={Analytics} />
                 <Stack.Screen name="RegisterDevice" component={SelectOrRegister}/>
+                <Stack.Screen name="Settings" component={Settings}/>
               </Stack.Navigator>
           </NavigationContainer>
 

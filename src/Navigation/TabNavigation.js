@@ -1,10 +1,11 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Icon from 'react-native-vector-icons/Ionicons'
 import React from 'react'
-import Home from '../Screens/Home';
+// import Home from '../Screens/Home';
 import Profile from '../Screens/Profile';
 import Analytics from '../Screens/Analytics';
 import Dashboard from '../Screens/Dashboard';
+import Settings from '../Screens/Settings';
 
 const Tab = createBottomTabNavigator();
 
@@ -18,8 +19,8 @@ const TabNavigation = () => {
 
           if (route.name === 'Dashboard') {
             iconName = focused ? 'home' : 'home-outline';
-          } else if (route.name === 'Profile') {
-            iconName = focused ? 'person' : 'person-outline';
+          } else if (route.name === 'Settings') {
+            iconName = focused ? 'settings' : 'settings-outline';
           } else if (route.name === 'Analytics') {
             iconName = focused ? 'bar-chart' : 'bar-chart-outline';
           }
@@ -44,7 +45,7 @@ const TabNavigation = () => {
       {/* <Text>TabNavigation</Text> */}
       <Tab.Screen name='Dashboard' component={Dashboard}/>
       <Tab.Screen name='Analytics' component={Analytics}/>
-      <Tab.Screen name='Profile' component={Profile}/>
+      <Tab.Screen name='Settings' component={Settings}/>
     </Tab.Navigator>
   )
 }

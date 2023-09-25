@@ -1,7 +1,6 @@
 import { StyleSheet, Text, View, Image } from 'react-native'
 import React, { useContext } from 'react'
 import { AuthContext } from '../context/AuthContext'
-import FormButton from '../components/formComponents/FormButton'
 
 const Profile = () => {
   const construction = require('./../assets/images/Underconstruction-bro.png')
@@ -10,7 +9,6 @@ const Profile = () => {
   return (
     <View style={styles.container}>
        <Image source={construction}  style={{width:300, height:300}}/>
-        <FormButton onPress={()=>{logout()}} title={'Logout'}/>
     </View>
   )
 }
