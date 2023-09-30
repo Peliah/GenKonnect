@@ -1,26 +1,63 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
-import React from 'react'
-
+import React, {useState} from 'react'
+import BottomSheetModal from '../components/DashboardComponents/BottomSheetModal'
 import Header from '../components/HomeComponents/Header'
-// import HomePageModal from '../components/HomeComponents/HomePageModal'
 import BigButton from '../components/HomeComponents/BigButton'
 import GenData from '../components/HomeComponents/GenData'
+import Icon from 'react-native-vector-icons/Ionicons'
 
 const Home = ({route}) => {
   const {generator} = route.params;
+  const toggleBottomSheet = () => {
+    setBottomSheetVisible(!isBottomSheetVisible);
+  };
+  const [isBottomSheetVisible, setBottomSheetVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
+  const modalOptions = [
+    {
+      title: 'Share',
+      icon: 'send-outline',
+      action: () => console.log(item.name +' Share modal')
+    },
+    {
+      title: 'Remove',
+      icon: 'trash-outline',
+      action: () => console.log(item.name +' Trash modal')
+    },
+    {
+      title: 'Print Data',
+      icon: 'print-outline',
+      action: () => console.log(item.name +' Print modal')
+    },
+  ]
   return (
     <View style={styles.contain}>
-      <Header/>
+      <Header iconName='arrow-back-outline' iconName2={'ellipsis-vertical-outline'} generator_route={generator} />
       <View style={styles.modals}>
         <Text>{generator.name}</Text>
+        {/* <Text>{generator._id}</Text> */}
       </View>
       <View style={styles.container}>
-        <BigButton/>
+        <BigButton generator={generator}/>
         {/* <Image source={construction}  style={{width:300, height:300}}/> */}
         {/* <TouchableOpacity onPress={()=>{logout()}}><Text>Logout</Text></TouchableOpacity> */}
       </View>
       <GenData/>
-      
+        <BottomSheetModal
+          isVisible={isBottomSheetVisible}
+          onClose={toggleBottomSheet}
+          >
+          {
+              [console.log(generator),
+              modalOptions.map((op, i)=>(
+              <TouchableOpacity  onPress={()=>op.action} key={i} style={styles.modalOptions}>
+                  <Text>{generator}</Text>
+                  <Text>{op.title}</Text>
+                  <Icon name={op.icon} size={25}/>
+              </TouchableOpacity>
+              ))]
+          }
+        </BottomSheetModal>
     </View>
   )
 }

@@ -6,7 +6,7 @@ import { AuthContextProvider } from './src/context/AuthContext';
 import * as Font from 'expo-font'
 import Router from './src/Navigation/Router';
 import { useEffect, useState } from 'react';
-
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false)
   useEffect(() =>{

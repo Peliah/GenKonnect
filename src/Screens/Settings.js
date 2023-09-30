@@ -4,28 +4,31 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { AuthContext } from '../context/AuthContext';
 import FormButton from '../components/formComponents/FormButton'
 
-const Settings = () => {
+const Settings = ({navigation}) => {
   const { authData, logout} = useContext(AuthContext);
 
   return (
     <View style={styles.container}>
 
+      <View style={styles.analyticsHeader1}>
+        <Icon size={25} name='log-out-outline' color={'#fff'} onPress={()=>{logout()}}/>
+        
+      </View>
       <View style={styles.analyticsHeader}>
+        <View style={[styles.userImg, {color:'#FFF'}]}>
+            <Icon name='person' size={50}  color={'#FFF'}/>
+          </View>
 
-        <View style={styles.userImg}>
-          <Icon name='person' size={50} />
-        </View>
-
-        <View>
-          <Text style={styles.settingsText}>{'First name'}</Text>
-          {/* <Text>{authData.firstName}</Text> */}
-          <Text>{'telephone'}</Text>
-          {/* <Text>{authData.telephone}</Text> */}
+          <View>
+            <Text style={[styles.settingsText, , {color:'#FFF'}]}>{'First name'}</Text>
+            {/* <Text>{authData.firstName}</Text> */}
+            <Text style={{color:'#FFF'}}>{'telephone'}</Text>
+            {/* <Text>{authData.telephone}</Text> */}
         </View>
       </View>
 
       <ScrollView style={styles.container2}>
-        <View style={styles.accountView}>
+        {/* <View style={styles.accountView}>
 
           <TouchableOpacity  style={styles.settingsTouch1}>
             <Text style={styles.settingsText}>John Doe</Text>
@@ -41,35 +44,36 @@ const Settings = () => {
             <Text style={styles.settingsText}>+237 650810984</Text>
             <Text style={styles.settingsText2}>Tap here to change number</Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
 
         <View style={styles.settingsView}>
           <TouchableOpacity style={styles.settingsTouch}>
-            <Icon name='notifications-outline' size={25} />
+            <Icon name='notifications-outline' size={20} />
             <Text style={styles.settingsText}>Notification and Sounds</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.settingsTouch}>
-            <Icon name='calendar-outline' size={25} />
+          <TouchableOpacity style={styles.settingsTouch} onPress={()=>{navigation.navigate("Schedules")}}>
+            <Icon name='calendar-outline' size={20} />
             <Text style={styles.settingsText}>Schedules</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.settingsTouch}>
-            <Icon name='language-outline' size={25} />
+          <TouchableOpacity style={styles.settingsTouch} >
+            <Icon name='language-outline' size={20} />
             <Text style={styles.settingsText}>Language</Text>
           </TouchableOpacity>
-          
-          <TouchableOpacity style={styles.settingsTouch}>
-            <Icon />
-            <Text />
+
+          <TouchableOpacity style={styles.settingsTouch} >
+            <Icon name='print-outline' size={20} />
+            <Text style={styles.settingsText}>Generate Report</Text>
           </TouchableOpacity>
+          
         </View>
       </ScrollView>
-        <TouchableOpacity style={styles.logoutbtn} onPress={()=>{logout()}} title={'Logout'}>
-            <Text>
+        {/* <TouchableOpacity style={styles.logoutbtn} onPress={()=>{logout()}} title={'Logout'}>
+            <Text style={{color:'#FFF'}}>
                 Logout
             </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
     </View>
   );
 }
@@ -81,12 +85,24 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   analyticsHeader: {
-    paddingTop: 60,
-    paddingBottom: 20,
-    backgroundColor: "#fff",
+    paddingTop: 80,
+    paddingBottom: 40,
+    backgroundColor: "#0074d9",
     paddingHorizontal: 15,
     flexDirection: "row",
     alignItems: "center",
+    paddingHorizontal:30,
+    // elevation: 5,
+  },
+  analyticsHeader1: {
+    paddingTop: 80,
+    paddingBottom: 40,
+    backgroundColor: "#0074d9",
+    paddingHorizontal: 15,
+    flexDirection: "row",
+    // alignItems: "flex-start",
+    justifyContent:'flex-end',
+    paddingHorizontal:30,
     elevation: 5,
   },
   userImg: {
@@ -94,12 +110,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
+    borderColor:'#FFF',
     padding: 10,
     marginRight: 20,
   },
   container2: {
     flex: 1,
-    marginTop:10
+    marginTop:20
     // backgroundColor: '#fff',
   },
   accountView: {
@@ -109,21 +126,26 @@ const styles = StyleSheet.create({
     // padding: 20,
     // backgroundColor: '#f5f5f5',
     // marginTop: 10,
+    paddingHorizontal:10
   },
   settingsTouch: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 20,
+    borderBottomColor:'gray',
+    borderBottomWidth:.5
   },
   settingsTouch1: {
     // flexDirection: 'row',
     // alignItems: 'center',
     paddingLeft: 20,
-    paddingBottom: 10,
+    paddingBottom: 20,
   },
   settingsText: {
-    fontSize: 16.5,
-    fontWeight:'400'
+    fontSize: 16,
+    fontWeight:'400',
+    paddingLeft:10,
+    color:'black'
   },
   settingsText2: {
     fontSize: 14,

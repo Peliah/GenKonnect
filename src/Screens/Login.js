@@ -6,7 +6,7 @@ import { AuthContext } from '../context/AuthContext'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Client from '../api/Client'
 
-const Login = () => {
+const Login = ({navigation}) => {
 
   const {login, setAuthData, authData, setUserToken, userToken, setIsGen, isGen} = useContext(AuthContext)
   //importing the image
@@ -36,33 +36,33 @@ const Login = () => {
     return true;
   };
 
-  // const submitForm = async () => {
+  const submitFormDemo = async () => {
 
-  //   if (isValidForm()) {
-  //       // await Client.post('/sign-in', { ...userInfo })
-  //       // .then(
-  //       //   res =>{
-  //           console.log('Form Submitted')
-  //           // console.log(userInfo.Password)
-  //           // console.log(userInfo.Email)
-  //           login()
-  //           setAuthData(userInfo)
+    if (isValidForm()) {
+        // await Client.post('/sign-in', { ...userInfo })
+        // .then(
+        //   res =>{
+            console.log('Form Submitted')
+            // console.log(userInfo.Password)
+            // console.log(userInfo.Email)
+            login()
+            setAuthData(userInfo)
 
-  //           console.log(authData)
-  //           // console.log(userInfo)
-  //           // console.log(res.data);
-  //           // setAuthData(res.data)
-  //           // setUserToken(authData.token)
+            console.log(authData)
+            // console.log(userInfo)
+            // console.log(res.data);
+            // setAuthData(res.data)
+            // setUserToken(authData.token)
 
-  //           // AsyncStorage.setItem('authData', JSON.stringify(authData))
-  //           // AsyncStorage.setItem('userToken', userToken)
-  //       //   }
-  //       // )
-  //       // .catch (e => {
-  //       //   console.log('login error' + e)
-  //       // })
-  //   }
-  // };
+            // AsyncStorage.setItem('authData', JSON.stringify(authData))
+            // AsyncStorage.setItem('userToken', userToken)
+        //   }
+        // )
+        // .catch (e => {
+        //   console.log('login error' + e)
+        // })
+    }
+  };
 
   const submitForm = async () => {
     if (isValidForm()) {
@@ -116,10 +116,13 @@ const Login = () => {
             {error ? (<Text style={{ color: 'red', fontSize: 10 }}>{error}</Text>) : null}
           </View>
           <View style={{marginVertical:15}}>
-            <FormButton onPress={submitForm} title={'Login'}/>
+            <FormButton onPress={submitFormDemo} title={'Login'}/>
           </View>
           
           {/* Submit button */}
+        <Text style={[styles.signup,]} onPress={()=>{navigation.push('Register')}}>
+          Don't have an account? <Text style={{color:'#0074d9'}}>Register here!</Text>
+        </Text>
         </View>
 
       {/* </ScrollView> */}

@@ -1,60 +1,58 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons'
-// import axios from 'axios';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { AuthContext } from '../../context/AuthContext';
-import Client from './../../api/Client'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import Client from './../../api/Client';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
-const BigButton = () => {
+const BigButton = ({ generator }) => {
+  const { authData } = useContext(AuthContext);
   const [isOn, setIsOn] = useState(false);
-  const {authData} = useContext(AuthContext)
-  //for the timer
-  const [running, setRunning] = useState(false)
-  const [time, setTime] = useState(0)
+  const [running, setRunning] = useState(false);
+  const [time, setTime] = useState(0);
 
-
-
-  useEffect(() => {
-    async function fetchCurrentState() {
-      try {
-        const response = await Client.get('/change');
-        setIsOn(response.data);
-      } catch (error) {
-        // Handle errors
-      }
-    }
-    
-    let interval;
-    if (running) {
-        interval = setInterval(() => {
-            setTime((prevTime) => prevTime + 1);
-        }, 1000);
-    } else {
-        clearInterval(interval);
-    }
-    fetchCurrentState();   
-    return () => clearInterval(interval);
-
-  }, [running]);
-
-
-  const toggleSwitch = async () => {
-    setIsOn(!isOn);
-    // startStop()
-    isOn ? reset():startStop()
-    const apiValue = isOn ? 0 : 1;
-    console.log(authData)
+  const fetchCurrentState = async () => {
     try {
-        console.log(apiValue)
-        // console.log(authData.good.Active)
-        const myItem = AsyncStorage.getItem('authData')
-        console.log(authData.good.Email)
-      const response = await Client.post('/change', { state: apiValue });
+      const response = await Client.get('/change');
+      setIsOn(response.data);
     } catch (error) {
       // Handle errors
-      console.log(error)
+    }
+  };
+
+  useEffect(() => {
+    let interval;
+    if (running) {
+      interval = setInterval(() => {
+        setTime((prevTime) => prevTime + 1);
+      }, 1000);
+    } else {
+      clearInterval(interval);
+    }
+    fetchCurrentState();
+    return () => clearInterval(interval);
+  }, [running]);
+
+  const toggleSwitch = async () => {
+    const apiValue = isOn ? 0 : 1;
+    setIsOn(!isOn);
+    isOn ? reset() : startStop();
+    try {
+      const token = await AsyncStorage.getItem('userToken');
+      const myItem = await AsyncStorage.getItem('authData');
+      const response = await Client.post(
+        '/change',
+        { state: apiValue, genId: generator._id },
+        {
+          headers: {
+            token: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(response.data);
+    } catch (error) {
+      // Handle errors
+      console.error(error + 'Why 400');
     }
   };
 
@@ -75,23 +73,17 @@ const BigButton = () => {
   };
 
   return (
-    <View
-    style={[
-        styles.toggleButtonGroup
-    ]}
-    >
-        <TouchableOpacity onPress={toggleSwitch} style={styles.toggleButton}>
-        <Icon name='power' size={100} color={isOn ? '#0074d9' : 'grey'}/>
-        </TouchableOpacity>
-        <Text style={[styles.timer, isOn ? styles.toggleOn : styles.toggleOff]}>{formatTime(time)}</Text>
-        <View style={styles.status}>
-            <Text>Status</Text>
-            <View style={styles.connected}>
-                <Text>
-                    {isOn ? 'Is Running' : 'Not Running'}
-                </Text>
-            </View>
+    <View style={styles.toggleButtonGroup}>
+      <TouchableOpacity onPress={toggleSwitch} style={styles.toggleButton}>
+        <Icon name="power" size={100} color={isOn ? '#0074d9' : 'grey'} />
+      </TouchableOpacity>
+      <Text style={[styles.timer, isOn ? styles.toggleOn : styles.toggleOff]}>{formatTime(time)}</Text>
+      <View style={styles.status}>
+        <Text>Status</Text>
+        <View style={styles.connected}>
+          <Text>{isOn ? 'Is Running' : 'Not Running'}</Text>
         </View>
+      </View>
     </View>
   );
 };
@@ -100,40 +92,37 @@ const styles = StyleSheet.create({
   toggleButton: {
     width: 250,
     height: 250,
-    borderRadius: 150, // Make it round 
+    borderRadius: 150,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor:'#fff',
-    elevation:5
+    backgroundColor: '#fff',
+    elevation: 5,
   },
   toggleOn: {
     color: '#0074d9',
   },
   toggleOff: {
-    color: 'grey', 
+    color: 'grey',
   },
-  toggleText: {
+  toggleButtonGroup: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  toggleButtonGroup:{
-    alignItems:'center',
-    justifyContent:'center',
+  timer: {
+    fontSize: 40,
+    fontWeight: '400',
+    margin: 20,
   },
-  timer:{
-    fontSize:40,
-    fontWeight:'400',
-    margin:20,
-    // elevation:3
+  status: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  status:{
-    alignItems:'center',
-    justifyContent:'center'
+  connected: {
+    borderRadius: 30,
+    backgroundColor: '#0074d9',
+    padding: 15,
+    paddingHorizontal: 40,
   },
-  connected:{
-    borderRadius:30,
-    backgroundColor:'#0074d9',
-    padding:15,
-    paddingHorizontal:40
-  }
 });
 
 export default BigButton;

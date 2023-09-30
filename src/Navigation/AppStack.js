@@ -10,6 +10,7 @@ import TabNavigation from './TabNavigation'
 import SelectOrRegister from '../Screens/SelectOrRegister'
 import Dashboard from '../Screens/Dashboard'
 import Settings from '../Screens/Settings'
+import Schedules from '../Screens/Schedules'
 
 
 const AppStack = () => {
@@ -27,6 +28,7 @@ const AppStack = () => {
                 <Stack.Screen name="Analytics" component={Analytics} />
                 <Stack.Screen name="RegisterDevice" component={SelectOrRegister}/>
                 <Stack.Screen name="Settings" component={Settings}/>
+                <Stack.Screen name="Schedules" component={Schedules}/>
               </Stack.Navigator>
           </NavigationContainer>
 
