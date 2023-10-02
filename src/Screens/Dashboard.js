@@ -33,6 +33,7 @@ const Dashboard = ({ navigation }) => {
       icon: 'print-outline',
       action: (item) => console.log(item.name +' Print modal')
     },
+    
   ]
   // const { isGen } = useContext(AuthContext);
 
@@ -147,16 +148,33 @@ const Dashboard = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Header />
-      <FlatList
-        data={generatorData}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        // keyExtractor={(item) => item._id}
-        style={styles.list}
-      />
-      <Text>
-        {/* {gens._id} */}
-      </Text>
+      <View>
+
+        <View style={{marginVertical:10, marginHorizontal:20, marginBottom: 15}}>
+          <Text>
+            Owned Generators
+          </Text>
+        </View>
+        <FlatList
+          data={generatorData}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+          // keyExtractor={(item) => item._id}
+          style={styles.list}
+        />
+        <View style={{marginVertical:10, marginHorizontal:20, marginBottom: 15}}>
+          <Text>
+            Shared Generators
+          </Text>
+        </View>
+        <FlatList
+          data={generatorData}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+          // keyExtractor={(item) => item._id}
+          style={styles.list}
+        />
+      </View>
       <TouchableOpacity
         style={styles.button}
         onPress={() => navigation.navigate('RegisterDevice')}
@@ -174,6 +192,7 @@ const styles = StyleSheet.create({
         flex: 1,
       },
       button: {
+        flex:1,
         position: 'absolute',
         bottom: 20, // Adjust this value to control the vertical position
         right: 20, // Adjust this value to control the horizontal position

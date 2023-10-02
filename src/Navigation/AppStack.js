@@ -11,6 +11,9 @@ import SelectOrRegister from '../Screens/SelectOrRegister'
 import Dashboard from '../Screens/Dashboard'
 import Settings from '../Screens/Settings'
 import Schedules from '../Screens/Schedules'
+import Share from '../Screens/Share'
+import Header from '../components/HomeComponents/Header'
+import BottomSheetModal from '../components/DashboardComponents/BottomSheetModal'
 
 
 const AppStack = () => {
@@ -24,11 +27,14 @@ const AppStack = () => {
                 <Stack.Screen name='Tab' component={TabNavigation}/>
                 <Stack.Screen name="Home" component={Home} />
                 <Stack.Screen name="Dashboard" component={Dashboard} />
+                <Stack.Screen name="Share" component={Share}/>
                 <Stack.Screen name="Profile" component={Profile} />
                 <Stack.Screen name="Analytics" component={Analytics} />
                 <Stack.Screen name="RegisterDevice" component={SelectOrRegister}/>
                 <Stack.Screen name="Settings" component={Settings}/>
                 <Stack.Screen name="Schedules" component={Schedules}/>
+                <Stack.Screen name="Header" component={Header}/>
+                <Stack.Screen name="BottomSheetModal" component={BottomSheetModal}/>
               </Stack.Navigator>
           </NavigationContainer>
 

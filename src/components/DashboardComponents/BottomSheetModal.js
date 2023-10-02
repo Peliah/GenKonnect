@@ -1,8 +1,10 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import Modal from 'react-native-modal';
+import { useNavigation } from '@react-navigation/native';
 
-const BottomSheetModal = ({ isVisible, onClose, children }) => {
+const BottomSheetModal = ({ isVisible, onClose, children}) => {
+  const navigation = useNavigation(); // Access the navigation object
   return (
     <Modal
       isVisible={isVisible}
@@ -12,7 +14,8 @@ const BottomSheetModal = ({ isVisible, onClose, children }) => {
       animationIn="slideInUp"
       animationOut="slideOutDown"
       useNativeDriver
-    >
+      
+>
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.headerText}>Bottom Sheet</Text>
@@ -36,7 +39,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
     padding: 20,
-    height: '30%', // Adjust the height as needed
+    height: '37%', // Adjust the height as needed
   },
   header: {
     alignItems: 'center',

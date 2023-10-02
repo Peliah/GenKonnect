@@ -1,69 +1,81 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import Icon from 'react-native-vector-icons/Ionicons'
-import React from 'react'
+import React, { useState } from 'react';
+import { View, Text, Modal, TextInput, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 
-const HomePageModal = ({iconName, title}) => {
+const AutoSuggestModal = ({ isVisible, onClose, data }) => {
+  const [searchText, setSearchText] = useState('');
+  const [filteredData, setFilteredData] = useState([]);
+
+  // Function to filter data based on the search text
+  const filterData = () => {
+    const filtered = data.filter(item => {
+      // Change 'item.name' to the property you want to search in
+      return item.name.toLowerCase().includes(searchText.toLowerCase());
+    });
+    setFilteredData(filtered);
+  };
+
   return (
-    <TouchableOpacity style={styles.container}>
-        <View style={styles.btnModal}>
-            <View style={styles.modalHeader}>
-                <View>
-                    <Text style={styles.modalHeaderText}>{title}</Text>
-                </View>
-                <View><Icon name={iconName} size={35}/></View>
-            </View>
-            <View>
-
-            </View>
-            <View style={styles.modalBottom}>
-                <View></View>
-                <View></View>
-            </View>
-        </View>
-    </TouchableOpacity>
-  )
-}
-
-export default HomePageModal
+    <Modal visible={isVisible} animationType="slide">
+      <View style={styles.container}>
+        <Text style={styles.header}>Search for Something</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Search..."
+          onChangeText={text => setSearchText(text)}
+          value={searchText}
+          onEndEditing={filterData}
+        />
+        <FlatList
+          data={filteredData}
+          renderItem={({ item }) => (
+            <TouchableOpacity onPress={() => console.log("Hello")}>
+              <Text style={styles.item}>{item.name}</Text>
+            </TouchableOpacity>
+          )}
+          keyExtractor={(item) => item.id.toString()}
+        />
+        <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+          <Text style={styles.closeButtonText}>Close</Text>
+        </TouchableOpacity>
+      </View>
+    </Modal>
+  );
+};
 
 const styles = StyleSheet.create({
-    container:{
-        flex:1,
-        justifyContent:'center',
-        alignItems: 'center',
-        // borderRadius:20,
-        backgroundColor: '#fff',
-        elevation:10,
-        width:200,
-        height:250,
-        padding:20,
-        margin:5,
-        marginTop:20,
-        borderRadius:10,
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  header: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  input: {
+    borderWidth: 1,
+    width: '80%',
+    padding: 10,
+    marginTop: 10,
+    borderRadius: 5,
+  },
+  item: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    fontSize: 16,
+  },
+  closeButton: {
+    alignItems: 'center',
+    marginTop: 10,
+    padding: 10,
+    backgroundColor: '#ff6347', // Red color for the close button
+    borderRadius: 5,
+  },
+  closeButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+});
 
-    },
-    viewImg:{
-        backgroundColor: '#fff',
-        width:110,
-        height:110,
-        borderRadius:10
-
-    },
-    btnModal:{
-        backgroundColor:'red',
-        width:'100%',
-        height:'100%'
-        // elevation:5,
-        // borderRadius:10,
-    },
-    modalHeader:{
-        flexDirection:'row',
-        justifyContent:'space-between',
-        alignItems:'center'
-    },
-    modalHeaderText:{
-        fontSize:25,
-        fontWeight:'500',
-        
-    }
-})
+export default AutoSuggestModal;

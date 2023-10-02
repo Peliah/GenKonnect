@@ -15,20 +15,32 @@ const Header = ({iconName, iconName2, onPress, generator_route}) => {
   const modalOptions = [
     {
       title: 'Share',
-      icon: 'send-outline',
-      action: (gen) => console.log(gen.name +' Share modal')
+      icon: 'share-social-outline',
+      action: (gen) => {navigation.navigate('Share', {generator : gen})
+                        toggleBottomSheet()}
     },
     {
       title: 'Remove',
       icon: 'trash-outline',
-      action: (gen) => console.log(gen.name +' Trash modal')
+      action: (gen) => {console.log(gen.name +' Trash modal')}
     },
     {
       title: 'Print Data',
       icon: 'print-outline',
-      action: (gen) => console.log(gen.name +' Print modal')
+      action: (gen) => {console.log(gen.name +' Print modal')}
+    },
+    {
+      title: 'Shared Users',
+      icon: 'people-outline',
+      action: (gen) => {console.log(gen.name +' Sahred modal')}
+    },
+    {
+      title: 'Schedule Maintenance',
+      icon: 'construct-outline',
+      action: (gen) =>{ console.log(gen.name +' Maintenace modal')}
     },
   ]
+  
   return (
     <>
         <View style={styles.container}>
@@ -51,14 +63,13 @@ const Header = ({iconName, iconName2, onPress, generator_route}) => {
         onClose={toggleBottomSheet}
         >
         {
-            [console.log(generator_route),
             modalOptions.map((op, i)=>(
             <TouchableOpacity  onPress={()=>op.action(generator_route)} key={i} style={styles.modalOptions}>
                 {/* <Text>{generator_route}</Text> */}
                 <Text>{op.title}</Text>
                 <Icon name={op.icon} size={25}/>
             </TouchableOpacity>
-            ))]
+            ))
         }
         </BottomSheetModal>
     </>

@@ -8,30 +8,10 @@ import Icon from 'react-native-vector-icons/Ionicons'
 
 const Home = ({route}) => {
   const {generator} = route.params;
-  const toggleBottomSheet = () => {
-    setBottomSheetVisible(!isBottomSheetVisible);
-  };
-  const [isBottomSheetVisible, setBottomSheetVisible] = useState(false);
-  const [visible, setVisible] = useState(true);
-  const modalOptions = [
-    {
-      title: 'Share',
-      icon: 'send-outline',
-      action: () => console.log(item.name +' Share modal')
-    },
-    {
-      title: 'Remove',
-      icon: 'trash-outline',
-      action: () => console.log(item.name +' Trash modal')
-    },
-    {
-      title: 'Print Data',
-      icon: 'print-outline',
-      action: () => console.log(item.name +' Print modal')
-    },
-  ]
+
+  
   return (
-    <View style={styles.contain}>
+    <View style={styles.contain} >
       <Header iconName='arrow-back-outline' iconName2={'ellipsis-vertical-outline'} generator_route={generator} />
       <View style={styles.modals}>
         <Text>{generator.name}</Text>
@@ -43,21 +23,7 @@ const Home = ({route}) => {
         {/* <TouchableOpacity onPress={()=>{logout()}}><Text>Logout</Text></TouchableOpacity> */}
       </View>
       <GenData/>
-        <BottomSheetModal
-          isVisible={isBottomSheetVisible}
-          onClose={toggleBottomSheet}
-          >
-          {
-              [console.log(generator),
-              modalOptions.map((op, i)=>(
-              <TouchableOpacity  onPress={()=>op.action} key={i} style={styles.modalOptions}>
-                  <Text>{generator}</Text>
-                  <Text>{op.title}</Text>
-                  <Icon name={op.icon} size={25}/>
-              </TouchableOpacity>
-              ))]
-          }
-        </BottomSheetModal>
+        
     </View>
   )
 }

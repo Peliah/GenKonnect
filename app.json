@@ -4,7 +4,7 @@
     "slug": "GenKonnect",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./src/assets/images/logo/logo-blue.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./src/assets/images/logo/logo-blue.png",
@@ -15,16 +15,23 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.peliah.GenKonnect"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.peliah.GenKonnect"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "bd3e6aac-7bdc-45db-8523-4155a0c831bc"
+      }
     }
   }
 }
