@@ -244,8 +244,8 @@ const styles = StyleSheet.create({
       },
       statusColorON:{
         backgroundColor:'#1DEB2A',
-        padding:20,
-        borderRadius:50
+        padding:10,
+        borderRadius:20
       },
       statusColorOff:{
         backgroundColor:'red',
