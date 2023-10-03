@@ -7,7 +7,7 @@
     "icon": "./src/assets/images/logo/logo-blue.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./src/assets/images/logo/logo-blue.png",
+      "image": "./src/assets/images/logo/logo-vertical-blue.png",
       "resizeMode": "contain",
       "backgroundColor": "#0074d9"
     },

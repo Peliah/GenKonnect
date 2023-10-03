@@ -11,27 +11,30 @@ const BigButton = ({ generator }) => {
   const [running, setRunning] = useState(false);
   const [time, setTime] = useState(0);
 
+  useEffect(() => {
+    fetchCurrentState();
+
+      // let interval;
+      // if (running) {
+      //   interval = setInterval(() => {
+      //     setTime((prevTime) => prevTime + 1);
+      //   }, 1000);
+      // } else {
+      //   clearInterval(interval);
+      // }
+      // return () => clearInterval(interval);
+    // }, [running]);
+  }, []);
   const fetchCurrentState = async () => {
     try {
-      const response = await Client.get('/change');
-      setIsOn(response.data);
+      const response = await Client.get('/getchange/pelray45');
+      console.log("stataes", response.data.state)
+      setIsOn(response.data.state);
     } catch (error) {
       // Handle errors
     }
   };
 
-  useEffect(() => {
-    let interval;
-    if (running) {
-      interval = setInterval(() => {
-        setTime((prevTime) => prevTime + 1);
-      }, 1000);
-    } else {
-      clearInterval(interval);
-    }
-    fetchCurrentState();
-    return () => clearInterval(interval);
-  }, [running]);
 
   const toggleSwitch = async () => {
     const apiValue = isOn ? 0 : 1;
@@ -42,7 +45,7 @@ const BigButton = ({ generator }) => {
       const myItem = await AsyncStorage.getItem('authData');
       const response = await Client.post(
         '/change',
-        { state: apiValue, genId: generator._id },
+        { state: apiValue, genId: generator.genId._id },
         {
           headers: {
             token: `Bearer ${token}`,
@@ -52,7 +55,7 @@ const BigButton = ({ generator }) => {
       console.log(response.data);
     } catch (error) {
       // Handle errors
-      console.error(error + 'Why 400');
+      console.error(error + ' Why 400');
     }
   };
 
@@ -65,19 +68,20 @@ const BigButton = ({ generator }) => {
     setTime(0);
   };
 
-  const formatTime = (seconds) => {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const remainingSeconds = seconds % 60;
-    return `${hours}:${minutes < 10 ? '0' : ''}${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
-  };
+  // const formatTime = (seconds) => {
+  //   const hours = Math.floor(seconds / 3600);
+  //   const minutes = Math.floor((seconds % 3600) / 60);
+  //   const remainingSeconds = seconds % 60;
+  //   return `${hours}:${minutes < 10 ? '0' : ''}${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+  // };
 
   return (
     <View style={styles.toggleButtonGroup}>
       <TouchableOpacity onPress={toggleSwitch} style={styles.toggleButton}>
         <Icon name="power" size={100} color={isOn ? '#0074d9' : 'grey'} />
       </TouchableOpacity>
-      <Text style={[styles.timer, isOn ? styles.toggleOn : styles.toggleOff]}>{formatTime(time)}</Text>
+      <Text style={[styles.timer, isOn ? styles.toggleOn : styles.toggleOff]}></Text>
+      {/* <Text style={[styles.timer, isOn ? styles.toggleOn : styles.toggleOff]}>{formatTime(time)}</Text> */}
       <View style={styles.status}>
         <Text>Status</Text>
         <View style={styles.connected}>

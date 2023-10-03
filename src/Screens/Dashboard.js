@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { StyleSheet, View, Text, FlatList, TouchableOpacity, Modal, SafeAreaView, useWindowDimensions } from 'react-native';
+import { StyleSheet, View, Text, FlatList, TouchableOpacity, ScrollView, Image, useWindowDimensions } from 'react-native';
 import Header from '../components/HomeComponents/Header';
 import { AuthContext } from '../context/AuthContext';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -10,51 +10,54 @@ import BottomSheetModal from '../components/DashboardComponents/BottomSheetModal
 
 const Dashboard = ({ navigation }) => {
   const dimension = useWindowDimensions()
-  const [isBottomSheetVisible, setBottomSheetVisible] = useState(false);
-
-  const toggleBottomSheet = () => {
-    setBottomSheetVisible(!isBottomSheetVisible);
-  };
-  const [visible, setVisible] = useState(true);
+  const desert = require('./../assets/images/saguarocactus-amico.png')
+ 
   const [gens, setGens] = useState([]);
-  const modalOptions = [
-    {
-      title: 'Share',
-      icon: 'send-outline',
-      action: (item) => console.log(item.name +' Share modal')
-    },
-    {
-      title: 'Remove',
-      icon: 'trash-outline',
-      action: (item) => console.log(item.name +' Trash modal')
-    },
-    {
-      title: 'Print Data',
-      icon: 'print-outline',
-      action: (item) => console.log(item.name +' Print modal')
-    },
-    
-  ]
+  const [sharedGens, setSharedGens] = useState([])
+  
   // const { isGen } = useContext(AuthContext);
+  const fetchCurrentState = async () => {
+    try {
+      const response = await Client.get('/getchange/pelray');
+      setIsOn(response.data);
+    } catch (error) {
+      // Handle errors
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const token = await AsyncStorage.getItem('userToken');
-         console.log(token);
+         console.log("token: "+token);
         
         if (token) {
+    fetchCurrentState()
+
+
           const response = await Client.get('/listgen', {
             headers: {
               token: `Bearer ${token}`,
             },
           });
-
+          console.log("Response Data:", response.data);
           // if (response.data) {
-            const genData = response.data.owned[0].GenKonId
+          if (response.data && response.data.owned && response.data.owned.length > 0) {
+            console.log("Respos.data ",response.data.owned[0].GenKonId)
+            const genData = response.data.owned[0].GenKonId;
             setGens(genData);
-            console.log(genData);
-          // }
+            console.log("My Gens " + genData);
+          } else {
+            console.log("No data found in response or unexpected response structure.");
+          }
+
+          if (response.data && response.data.shared && response.data.shared.length > 0) {
+            const genDataShared = response.data.shared[0].GenKonId;
+            setSharedGens(genDataShared);
+            console.log("Shared Gens " + genDataShared);
+          } else {
+            console.log("No data found in response or unexpected response structure.");
+          }
         }
       } catch (error) {
         console.error('Error Fetching data ', error);
@@ -62,7 +65,8 @@ const Dashboard = ({ navigation }) => {
     };
 
     fetchData();
-    // console.log(gens)
+    console.log(gens)
+    console.log(sharedGens)
   }, []);
 
   const generatorData = [
@@ -111,32 +115,15 @@ const Dashboard = ({ navigation }) => {
         <View style={styles.contactConLeft}>
           <Icon name='flash' color={'#F9AE08'} size={30} />
           <View style={styles.contactDat}>
-            {/* <Text style={styles.name}>{item.genId._id}</Text> */}
-            <Text style={styles.name}>{item.name}</Text>
+            <Text style={styles.name}>{item.genId._id}</Text>
+            {/* <Text style={styles.name}>{item.name}</Text> */}
           </View>
         </View>
-        <TouchableOpacity style={{alignItems: 'center', justifyContent:'center', flexDirection:'row'}} onPress={toggleBottomSheet}>
-          <View style={item.status ===1 ? styles.statusColorON: styles.statusColorOff}>
-          </View>
-          <Icon name='ellipsis-vertical-outline' size={25} />
-        </TouchableOpacity>
+        <View style={item.genId.state ===1 ? styles.statusColorON: styles.statusColorOff}>
+        </View>
       </TouchableOpacity>
       {/* <Text>{item.name}</Text> */}
-        <BottomSheetModal
-          isVisible={isBottomSheetVisible}
-          onClose={toggleBottomSheet}
-        >
-          {
-            [console.log(item),
-            modalOptions.map((op, i)=>(
-              <TouchableOpacity  onPress={()=>op.action(item)} key={i} style={styles.modalOptions}>
-                <Text>{item.name}</Text>
-                <Text>{op.title}</Text>
-                <Icon name={op.icon} size={25}/>
-              </TouchableOpacity>
-            ))]
-          }
-        </BottomSheetModal>
+
     </>
     );
   };
@@ -146,8 +133,9 @@ const Dashboard = ({ navigation }) => {
   }
 
   return (
+    <>
+    <Header />
     <View style={styles.container}>
-      <Header />
       <View>
 
         <View style={{marginVertical:10, marginHorizontal:20, marginBottom: 15}}>
@@ -155,33 +143,67 @@ const Dashboard = ({ navigation }) => {
             Owned Generators
           </Text>
         </View>
-        <FlatList
-          data={generatorData}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-          // keyExtractor={(item) => item._id}
-          style={styles.list}
-        />
+
+        {gens.length === 0 ? 
+          (
+            <View style={{
+              // flex: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingBottom:20,
+              backgroundColor:"#fff"
+              // padding:15,
+              // paddingTop:10
+            }}>
+              <Image source={desert}  style={{width:300, height:300}}/>
+            </View>)
+            :
+          (
+            <FlatList
+              data={gens}
+              renderItem={renderItem}
+              // keyExtractor={(item) => item.id}
+              keyExtractor={(item) => item._id}
+              style={styles.list}
+            />
+          )}
         <View style={{marginVertical:10, marginHorizontal:20, marginBottom: 15}}>
           <Text>
             Shared Generators
           </Text>
         </View>
-        <FlatList
-          data={generatorData}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-          // keyExtractor={(item) => item._id}
-          style={styles.list}
-        />
+        {sharedGens.length === 0 ? 
+          (
+            <View style={{
+              // flex: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingBottom:20,
+              backgroundColor:"#fff"
+              // padding:15,
+              // paddingTop:10
+            }}>
+              <Image source={desert}  style={{width:300, height:300}}/>
+            </View>)
+            :
+          (
+            <FlatList
+              data={setSharedGens}
+              renderItem={renderItem}
+              // keyExtractor={(item) => item.id}
+              keyExtractor={(item) => item._id}
+              style={styles.list}
+            />
+          )}
       </View>
+    </View>
       <TouchableOpacity
         style={styles.button}
         onPress={() => navigation.navigate('RegisterDevice')}
       >
         <Icon name="add-outline" size={32} color={'#FFF'}/>
       </TouchableOpacity>
-    </View>
+    </>
   );
 };
 
@@ -222,7 +244,7 @@ const styles = StyleSheet.create({
       },
       statusColorON:{
         backgroundColor:'#1DEB2A',
-        padding:10,
+        padding:20,
         borderRadius:50
       },
       statusColorOff:{

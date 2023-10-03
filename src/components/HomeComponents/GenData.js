@@ -1,16 +1,17 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const GenData = () => {
+const GenData = ({genData}) => {
+    console.log("button: ", genData)
   return (
     <View style={styles.container}>
         <View>
-            <Text>Fuel Status:  <Text>__:__</Text></Text>
-            <Text>Oil Status:  <Text>__:__</Text></Text>
+            <Text>Fuel Status:  <Text>{genData.genId.fuel}</Text>%</Text>
+            <Text>Oil Status:  <Text>{genData.genId.fuel}</Text>%</Text>
         </View>
         <View>
-            <Text>Energy Consumption:  <Text>__:__</Text></Text>
-            <Text>Energy Consumption:  <Text>__:__</Text></Text>
+            <Text>Energy Consumption:  <Text>20</Text>KV</Text>
+            <Text>Power Output:  <Text>{genData.genId.PowerOutPut}</Text></Text>
         </View>
     </View>
   )

@@ -116,7 +116,7 @@ const Login = ({navigation}) => {
             {error ? (<Text style={{ color: 'red', fontSize: 10 }}>{error}</Text>) : null}
           </View>
           <View style={{marginVertical:15}}>
-            <FormButton onPress={submitFormDemo} title={'Login'}/>
+            <FormButton onPress={submitForm} title={'Login'}/>
           </View>
           
           {/* Submit button */}

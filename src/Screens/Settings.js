@@ -1,11 +1,31 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { AuthContext } from '../context/AuthContext';
 import FormButton from '../components/formComponents/FormButton'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Settings = ({navigation}) => {
-  const { authData, logout} = useContext(AuthContext);
+  const { logout} = useContext(AuthContext);
+  const [authData, setAuthData] = useState({})
+  // console.log({authData})
+  useEffect(()=>{
+    const fetchData = async () => {
+      try {
+        const useData = await AsyncStorage.getItem('authData');
+         console.log("Stored Auth data "+useData);
+         if(useData){
+          const parseData = JSON.parse(useData)
+         console.log("Parsed Auth data ",parseData.good.First_name);
+         setAuthData(parseData.good.Username)
+         console.log(authData)
+        }
+      }catch(error){
+        console.error('Error Fetching data ', error);
+      }
+    }
+    fetchData()
+  },[])
 
   return (
     <View style={styles.container}>
@@ -20,7 +40,7 @@ const Settings = ({navigation}) => {
           </View>
 
           <View>
-            <Text style={[styles.settingsText, , {color:'#FFF'}]}>{'First name'}</Text>
+            {/* <Text style={[styles.settingsText, , {color:'#FFF'}]}>{authData.Username}</Text> */}
             {/* <Text>{authData.firstName}</Text> */}
             <Text style={{color:'#FFF'}}>{'telephone'}</Text>
             {/* <Text>{authData.telephone}</Text> */}

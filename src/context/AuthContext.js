@@ -9,7 +9,7 @@ export const AuthContextProvider = ({ children }) => {
     const [userToken, setUserToken] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
     const [isGen, setIsGen] = useState(false)
-    const [authData, setAuthData] = useState(null)
+    const [authData, setAuthData] = useState()
 
     
 

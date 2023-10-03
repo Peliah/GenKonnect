@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   StyleSheet,
   Text,
@@ -11,21 +11,34 @@ import {
 } from 'react-native';
 import { isValidEmail, isValidObjField, updateError } from '../components/Method';
 import FormButton from '../components/formComponents/FormButton';
+import Client from '../api/Client';
+import { AuthContext } from '../context/AuthContext'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const Register = ({ navigation }) => {
+  const {login, setAuthData, authData, setUserToken, userToken, setIsGen, isGen} = useContext(AuthContext)
+
   const niceImage = require('./../assets/images/Lightbulb-bro.png');
   const [userInfo, setUserInfo] = useState({
     First_name: '',
-    email: '',
+    Last_name: '',
+    Username: '',
+    Email: '',
     Telephone: '',
-    confirmPassword: '',
-    password: '',
+    confirmPass: '',
+    Password: '',
   });
 
   const [error, setError] = useState('');
-  const { First_name, email, Telephone, password, confirmPassword } = userInfo;
+  const { First_name,Last_name,Username, Email, Telephone, Password, confirmPass } = userInfo;
 
   const handleOnChangeText = (value, fieldName) => {
+    console.log('Input value:', value); // Add this line
+    if (fieldName === 'Telephone') {
+      // Remove non-numeric characters from the input
+      value = value.replace(/[^0-9]/g, '');
+    }
+    console.log('Processed value:', value); // Add this line
     setUserInfo({ ...userInfo, [fieldName]: value });
   };
 
@@ -35,16 +48,16 @@ const Register = ({ navigation }) => {
       return false;
     }
 
-    if (!isValidEmail(email)) {
+    if (!isValidEmail(Email)) {
       updateError('Invalid email!', setError);
       return false;
     }
 
-    if (!password.trim() || password.length < 5) {
+    if (!Password.trim() || Password.length < 5) {
       updateError('Password is too short!', setError);
       return false;
     }
-    if(password !== confirmPassword){
+    if(Password !== confirmPass){
       updateError('Password is incorrect', setError);
       return false;
     }
@@ -52,13 +65,51 @@ const Register = ({ navigation }) => {
     return true;
   };
 
+  // const submitForm = async () => {
+  //   if (isValidForm()) {
+  //     console.log('Form Submitted');
+  //     console.log(userInfo.password);
+  //     console.log(userInfo.email);
+  //   } else {
+  //     console.log('Validation failed');
+  //   }
+  // };
+
   const submitForm = async () => {
+    console.log("hello")
     if (isValidForm()) {
-      console.log('Form Submitted');
-      console.log(userInfo.password);
-      console.log(userInfo.email);
-    } else {
-      console.log('Validation failed');
+    console.log("hi")
+    const numericTelephone = parseInt(Telephone, 10);
+
+      try {
+        const response = await Client.post('/register', { ...userInfo, Telephone: numericTelephone, });
+        
+        if (response.status === 201) {
+          console.log('Form Submitted');
+          console.log(userInfo.Password);
+          console.log(userInfo.Email);
+          console.log(response.data);
+  
+          setAuthData(response.data);
+          setUserToken(response.data.accesstoken);
+          setIsGen(response.data.good.Active);
+  
+          // Store the authentication data and token in AsyncStorage
+          AsyncStorage.setItem('authData', JSON.stringify(response.data));
+          AsyncStorage.setItem('userToken', response.data.accesstoken);
+        } else {
+          console.log('Login failed:', response.data); // Handle login failure
+        }
+      } catch (error) {
+        if (error.response) {
+          console.log('Server responded with:', error.response.data);
+          console.log('Status code:', error.response.status);
+        } else if (error.request) {
+          console.log('Request made but no response received:', error.request);
+        } else {
+          console.log('Error setting up the request:', error.message);
+        }
+      }
     }
   };
 
@@ -71,17 +122,31 @@ const Register = ({ navigation }) => {
 
         <View style={styles.fields}>
           <TextInput
-            placeholder="Name"
+            placeholder="First Name"
             value={First_name}
             style={styles.input}
             onChangeText={(value) => handleOnChangeText(value, 'First_name')}
             autoCapitalize="none"
           />
           <TextInput
-            placeholder="Email"
-            value={email}
+            placeholder="Last Name"
+            value={Last_name}
             style={styles.input}
-            onChangeText={(value) => handleOnChangeText(value, 'email')}
+            onChangeText={(value) => handleOnChangeText(value, 'Last_name')}
+            autoCapitalize="none"
+          />
+          <TextInput
+            placeholder="Username"
+            value={Username}
+            style={styles.input}
+            onChangeText={(value) => handleOnChangeText(value, 'Username')}
+            autoCapitalize="none"
+          />
+          <TextInput
+            placeholder="Email"
+            value={Email}
+            style={styles.input}
+            onChangeText={(value) => handleOnChangeText(value, 'Email')}
             autoCapitalize="none"
           />
           <TextInput
@@ -90,20 +155,21 @@ const Register = ({ navigation }) => {
             style={styles.input}
             onChangeText={(value) => handleOnChangeText(value, 'Telephone')}
             autoCapitalize="none"
+            keyboardType="numeric"
           />
           <TextInput
             placeholder="Password"
-            value={password}
+            value={Password}
             style={[styles.input]}
-            onChangeText={(value) => handleOnChangeText(value, 'password')}
+            onChangeText={(value) => handleOnChangeText(value, 'Password')}
             secureTextEntry
             autoCapitalize="none"
           />
           <TextInput
             placeholder="Confirm Password"
-            value={confirmPassword}
+            value={confirmPass}
             style={[styles.input, {marginBottom:30}]}
-            onChangeText={(value) => handleOnChangeText(value, 'confirmPassword')}
+            onChangeText={(value) => handleOnChangeText(value, 'confirmPass')}
             secureTextEntry
             autoCapitalize="none"
           />
@@ -111,12 +177,12 @@ const Register = ({ navigation }) => {
           {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
           <FormButton onPress={submitForm} title="Register" />
-        </View>
-
         <Text style={styles.signup} onPress={() => navigation.push('Login')}>
           Already have an account?{' '}
           <Text style={{ color: '#0074d9' }}>Login here!</Text>
         </Text>
+        </View>
+
       {/* </ScrollView> */}
     </KeyboardAvoidingView>
   );
@@ -126,11 +192,11 @@ export default Register;
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    width: '100%',
-    height:'100%',
+    // width: '100%',
+    // height:'100%',
     // backgroundColor:'black'
   },
   errorText: {
