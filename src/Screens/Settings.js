@@ -6,9 +6,13 @@ import FormButton from '../components/formComponents/FormButton'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Settings = ({navigation}) => {
-  const { logout} = useContext(AuthContext);
-  const [authData, setAuthData] = useState({})
+  const { logout, authData} = useContext(AuthContext);
+  // const [authData, setAuthData] = useState({})
+  // const firstname = authData.good.Firstname
   // console.log({authData})
+
+  
+  
   useEffect(()=>{
     const fetchData = async () => {
       try {
@@ -16,9 +20,10 @@ const Settings = ({navigation}) => {
          console.log("Stored Auth data "+useData);
          if(useData){
           const parseData = JSON.parse(useData)
-         console.log("Parsed Auth data ",parseData.good.First_name);
-         setAuthData(parseData.good.Username)
-         console.log(authData)
+         console.log("Parsed Auth data ",parseData.good.Email);
+        //  authData = parseData.good.First_name
+        //  setAuthData(parseData.good.Username)
+         console.log(firstname)
         }
       }catch(error){
         console.error('Error Fetching data ', error);
@@ -72,10 +77,10 @@ const Settings = ({navigation}) => {
             <Text style={styles.settingsText}>Notification and Sounds</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.settingsTouch} onPress={()=>{navigation.navigate("Schedules")}}>
+          {/* <TouchableOpacity style={styles.settingsTouch} onPress={()=>{navigation.navigate("Schedules")}}>
             <Icon name='calendar-outline' size={20} />
             <Text style={styles.settingsText}>Schedules</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           <TouchableOpacity style={styles.settingsTouch} >
             <Icon name='language-outline' size={20} />

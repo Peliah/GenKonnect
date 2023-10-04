@@ -3,15 +3,23 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import React, {useState} from 'react'
 import { useNavigation } from '@react-navigation/native';
 import BottomSheetModal from '../DashboardComponents/BottomSheetModal';
-
+import Client from '../../api/Client';
 const Header = ({iconName, iconName2, onPress, generator_route}) => {
     const navigation = useNavigation();
-    console.log(generator_route)
+    // console.log(typeof generator_route)
     const [isBottomSheetVisible, setBottomSheetVisible] = useState(false);
 
   const toggleBottomSheet = () => {
     setBottomSheetVisible(!isBottomSheetVisible);
   };
+  const deletePost = async ()=> {
+    try {
+      const response = await Client.delete(`/delgen/${generator_route.genId._id}`)
+      console.log(response.data)
+    } catch (error) {
+      
+    }
+  }
   const modalOptions = [
     {
       title: 'Share',
@@ -22,22 +30,23 @@ const Header = ({iconName, iconName2, onPress, generator_route}) => {
     {
       title: 'Remove',
       icon: 'trash-outline',
-      action: (gen) => {console.log(gen.name +' Trash modal')}
+      action: (gen) => {deletePost()}
     },
     {
-      title: 'Print Data',
+      title: 'Report Data',
       icon: 'print-outline',
-      action: (gen) => {console.log(gen.name +' Print modal')}
+      action: (gen) => {navigation.navigate('Analytics', {generator : gen})
+                        toggleBottomSheet()}
     },
     {
       title: 'Shared Users',
       icon: 'people-outline',
-      action: (gen) => {console.log(gen.name +' Sahred modal')}
+      action: (gen) => {}
     },
     {
       title: 'Schedule Maintenance',
       icon: 'construct-outline',
-      action: (gen) =>{ console.log(gen.name +' Maintenace modal')}
+      action: (gen) =>{ navigation.navigate('Schedules', {generator:gen})}
     },
   ]
   
@@ -47,13 +56,9 @@ const Header = ({iconName, iconName2, onPress, generator_route}) => {
             <TouchableOpacity style={{}} onPress={()=>navigation.goBack()}>
                 <Icon name={iconName} color={'grey'} size={25}  />
             </TouchableOpacity>
-
-            {/* <View style={{borderRadius:50, width:25, height:25, alignItems:'center', justifyContent:'center', borderWidth:1}}> */}
-            {/* </View> */}
             <View>
                 <Text style={styles.title}>Header</Text>
             </View>
-            {/* <TouchableOpacity onPress={()=>console.log({generator_route})}> */}
             <TouchableOpacity onPress={toggleBottomSheet}>
                 <Icon name={iconName2} size={25}/>
             </TouchableOpacity>

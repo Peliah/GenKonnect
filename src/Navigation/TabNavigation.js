@@ -21,9 +21,7 @@ const TabNavigation = () => {
             iconName = focused ? 'home' : 'home-outline';
           } else if (route.name === 'Settings') {
             iconName = focused ? 'settings' : 'settings-outline';
-          } else if (route.name === 'Analytics') {
-            iconName = focused ? 'bar-chart' : 'bar-chart-outline';
-          }
+          } 
 
           return <Icon name={iconName} size={size} color={color} />;
         },
@@ -44,7 +42,7 @@ const TabNavigation = () => {
       >
       {/* <Text>TabNavigation</Text> */}
       <Tab.Screen name='Dashboard' component={Dashboard}/>
-      <Tab.Screen name='Analytics' component={Analytics}/>
+      {/* <Tab.Screen name='Analytics' component={Analytics}/> */}
       <Tab.Screen name='Settings' component={Settings}/>
     </Tab.Navigator>
   )

@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import {View, TextInput, FlatList, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import { BackHandler } from 'react-native';
+import Client from '../api/Client';
 
-const Share = ({ navigation }) => {
+const Share = ({ navigation, route }) => {
+  const {generator} = route.params
+  console.log("share:", generator)
+
   const [searchQuery, setSearchQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
-  const data = ['Apple', 'Banana', 'Cherry', 'Date', 'Fig', 'Grapes'];
+  const [selectedUser, setSelectedUser] = useState(null);
 
   const handleSearch = (query) => {
     setSearchQuery(query);
@@ -24,6 +28,7 @@ const Share = ({ navigation }) => {
     setSuggestions([]); // Clear suggestions after selection
   };
   useEffect(() => {
+    fetchUserSuggestions();
     const backAction = () => {
       navigation.goBack(); // Navigate back to the previous screen
       return true; // Return true to indicate that you've handled the back button
@@ -33,6 +38,31 @@ const Share = ({ navigation }) => {
 
     return () => backHandler.remove(); // Remove the back button listener when unmounting
   }, [navigation]); // Make sure to include navigation in the dependency array
+
+  const fetchUserSuggestions = async () => {
+    try {
+      const response = await Client.get(`/searchacc`, {
+        params: {
+          search: searchQuery,
+        },
+        headers: {
+          'Content-Type': 'application/json',
+          // You can add any required headers, such as authentication tokens, here
+        },
+      });
+
+      if (response.status === 200) {
+        // Store the user suggestions in state
+        setSuggestions(response.data);
+      } else {
+        // Handle errors here, e.g., response.status
+        console.error('Search request failed:', response.status);
+      }
+    } catch (error) {
+      // Handle network errors or other exceptions
+      console.error('Error during search:', error);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -44,13 +74,18 @@ const Share = ({ navigation }) => {
       />
       <FlatList
         data={suggestions}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => handleSelectItem(item)}>
-             <Text style={styles.suggestionItem}>{item}</Text>
+          <TouchableOpacity onPress={() => handleSelectUser(item)}>
+            <Text style={styles.suggestionItem}>{item.First_name}</Text>
           </TouchableOpacity>
         )}
       />
+      {selectedUser && (
+        <TouchableOpacity onPress={handleShareGenerator} style={styles.shareButton}>
+          <Text style={{ color: '#fff' }}>Share Generator</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

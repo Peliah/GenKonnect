@@ -39,28 +39,13 @@ const Login = ({navigation}) => {
   const submitFormDemo = async () => {
 
     if (isValidForm()) {
-        // await Client.post('/sign-in', { ...userInfo })
-        // .then(
-        //   res =>{
+      
             console.log('Form Submitted')
-            // console.log(userInfo.Password)
-            // console.log(userInfo.Email)
             login()
             setAuthData(userInfo)
 
             console.log(authData)
-            // console.log(userInfo)
-            // console.log(res.data);
-            // setAuthData(res.data)
-            // setUserToken(authData.token)
-
-            // AsyncStorage.setItem('authData', JSON.stringify(authData))
-            // AsyncStorage.setItem('userToken', userToken)
-        //   }
-        // )
-        // .catch (e => {
-        //   console.log('login error' + e)
-        // })
+            
     }
   };
 

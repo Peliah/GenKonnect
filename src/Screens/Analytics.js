@@ -1,28 +1,54 @@
 import { StyleSheet, Text, View, Image, ScrollView } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import HomePageModal from './../components/HomeComponents/HomePageModal'
 import Graphs from '../components/AnalyticsComponent/Graphs'
+import Client from '../api/Client'
 
-const Analytics = () => {
-    // const construction = require('./../assets/images/Underconstruction-bro.png')
+const Analytics = ({route}) => {
+const {generator}=route.params
+const generatorId=generator.genId._id
+  const monitoring = async ()=>{
+    try {
+      const response = Client.get(`/Monitor/${generatorId}`)
+      console.log(response.data)
+    } catch (error) {
+      if (error.response) {
+        console.log('Server responded with:', error.response.data);
+        console.log('Status code:', error.response.status);
+      } else if (error.request) {
+        console.log('Request made but no response received:', error.request);
+      } else {
+        console.log('Error setting up the request:', error.message);
+      }
+    }
+  }
+    useEffect(()=>{
+     monitoring()
+     const intervalId = setInterval(()=>{
+      // console.log(generator)
+      monitoring();
+     }, 1000)
+
+     return ()=>{clearInterval(intervalId)}
+    },[])
 
     return (
       <View style={styles.container}>
         <View style={styles.analyticsHeader}>
-
+          <Text>Analytics</Text>
         </View>
         <View style={styles.containerBody}>
           <View style={{}}>
-            <ScrollView contentContainerStyle={styles.modals} horizontal={true} showsHorizontalScrollIndicator={false}>
+            {/* <ScrollView contentContainerStyle={styles.modals} horizontal={true} showsHorizontalScrollIndicator={false}>
               <HomePageModal/>
               <HomePageModal/>
               <HomePageModal/>
               <HomePageModal/>
-            </ScrollView>
+            </ScrollView> */}
           </View>
-          <View>
+          {/* <View>
             <Graphs/>
-          </View>
+          </View> */}
         </View>
         {/* <Image source={construction}  style={{width:300, height:300}}/> */}
       </View>

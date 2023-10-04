@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
     padding: 20,
-    height: '37%', // Adjust the height as needed
+    height: '38%', // Adjust the height as needed
   },
   header: {
     alignItems: 'center',
