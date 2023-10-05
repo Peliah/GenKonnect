@@ -14,9 +14,18 @@ import FormButton from '../components/formComponents/FormButton';
 import Client from '../api/Client';
 import { AuthContext } from '../context/AuthContext'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import CongratulationsPopup from '../components/formComponents/CongratulationsPopup';
 
 const Register = ({ navigation }) => {
   const {login, setAuthData, authData, setUserToken, userToken, setIsGen, isGen} = useContext(AuthContext)
+
+  const [showCongratulations, setShowCongratulations] = useState(false);
+
+  // Function to navigate to the login screen
+  const navigateToLogin = () => {
+    setShowCongratulations(false); // Close the popup
+    navigation.navigate('Login'); // Navigate to the login screen
+  };
 
   const niceImage = require('./../assets/images/Lightbulb-bro.png');
   const [userInfo, setUserInfo] = useState({
@@ -33,12 +42,12 @@ const Register = ({ navigation }) => {
   const { First_name,Last_name,Username, Email, Telephone, Password, confirmPass } = userInfo;
 
   const handleOnChangeText = (value, fieldName) => {
-    console.log('Input value:', value); // Add this line
+    // console.log('Input value:', value); // Add this line
     if (fieldName === 'Telephone') {
       // Remove non-numeric characters from the input
       value = value.replace(/[^0-9]/g, '');
     }
-    console.log('Processed value:', value); // Add this line
+    // console.log('Processed value:', value); // Add this line
     setUserInfo({ ...userInfo, [fieldName]: value });
   };
 
@@ -90,13 +99,14 @@ const Register = ({ navigation }) => {
           console.log(userInfo.Email);
           console.log(response.data);
   
-          setAuthData(response.data);
-          setUserToken(response.data.accesstoken);
-          setIsGen(response.data.good.Active);
+          // setAuthData(response.data);
+          // setUserToken(response.data.accesstoken);
+          // setIsGen(response.data.good.Active);
   
-          // Store the authentication data and token in AsyncStorage
-          AsyncStorage.setItem('authData', JSON.stringify(response.data));
-          AsyncStorage.setItem('userToken', response.data.accesstoken);
+          // // Store the authentication data and token in AsyncStorage
+          // AsyncStorage.setItem('authData', JSON.stringify(response.data));
+          // AsyncStorage.setItem('userToken', response.data.accesstoken);
+          setShowCongratulations(true);
         } else {
           console.log('Login failed:', response.data); // Handle login failure
         }
@@ -182,6 +192,10 @@ const Register = ({ navigation }) => {
           <Text style={{ color: '#0074d9' }}>Login here!</Text>
         </Text>
         </View>
+        <CongratulationsPopup
+        visible={showCongratulations}
+        onClose={navigateToLogin}
+      />
 
       {/* </ScrollView> */}
     </KeyboardAvoidingView>

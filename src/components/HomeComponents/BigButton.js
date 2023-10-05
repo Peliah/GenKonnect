@@ -39,35 +39,35 @@ const BigButton = ({ generator, SerialNo}) => {
       if (response.data.state === 1) {
         // If the generator is running, calculate the duration
         console.log("hiiii ",generator.genId.updatedAt)
-        calculateDuration(generator.genId.updatedAt);
+        // calculateDuration(generator.genId.updatedAt);
       }
     } catch (error) {
       // Handle errors
     }
   };
 
-  const calculateDuration = (updatedAt) => {
-    const intervalId = setInterval(() => {
-      const updatedTime = new Date(updatedAt).getTime();
-      console.log("Updated Time",updatedTime);
-      const currentTime = new Date().getTime();
-      const diff = currentTime - updatedTime;
+  // const calculateDuration = (updatedAt) => {
+  //   const intervalId = setInterval(() => {
+  //     const updatedTime = new Date(updatedAt).getTime();
+  //     console.log("Updated Time",updatedTime);
+  //     const currentTime = new Date().getTime();
+  //     const diff = currentTime - updatedTime;
 
-      // Calculate hours, minutes, and seconds from the difference
-      const hours = Math.floor(diff / 3600000);
-      const minutes = Math.floor((diff % 3600000) / 60000);
-      const seconds = Math.floor((diff % 60000) / 1000);
+  //     // Calculate hours, minutes, and seconds from the difference
+  //     const hours = Math.floor(diff / 3600000);
+  //     const minutes = Math.floor((diff % 3600000) / 60000);
+  //     const seconds = Math.floor((diff % 60000) / 1000);
 
-      // Format the duration as a string
-      const durationString = `${hours}h ${minutes}m ${seconds}s`;
+  //     // Format the duration as a string
+  //     const durationString = `${hours}h ${minutes}m ${seconds}s`;
 
-      // Update the duration state
-      setDuration(durationString);
-    }, 1000); // Update every second
+  //     // Update the duration state
+  //     setDuration(durationString);
+  //   }, 1000); // Update every second
 
-    // Clean up the interval on unmount or when the generator stops running
-    return () => clearInterval(intervalId);
-  };
+  //   // Clean up the interval on unmount or when the generator stops running
+  //   return () => clearInterval(intervalId);
+  // };
 
   const toggleSwitch = async () => {
     const apiValue = isOn ? 0 : 1;
@@ -92,15 +92,15 @@ const BigButton = ({ generator, SerialNo}) => {
     }
   };
 
-  const startStop = () => {
-    setRunning(!running);
-  };
+  // const startStop = () => {
+  //   setRunning(!running);
+  // };
 
-  const reset = () => {
-    setRunning(false);
-    setTime(0);
-    setDuration(null);
-  };
+  // const reset = () => {
+  //   setRunning(false);
+  //   setTime(0);
+  //   setDuration(null);
+  // };
 
   // const formatTime = (seconds) => {
   //   const hours = Math.floor(seconds / 3600);

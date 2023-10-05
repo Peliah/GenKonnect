@@ -71,7 +71,14 @@ const Login = ({navigation}) => {
           console.log('Login failed:', response.data); // Handle login failure
         }
       } catch (error) {
-        console.log('Login error:', error);
+        if (error.response) {
+          console.log('Server responded with:', error.response.data);
+          console.log('Status code:', error.response.status);
+        } else if (error.request) {
+          console.log('Request made but no response received:', error.request);
+        } else {
+          console.log('Error setting up the request:', error.message);
+        }
       }
     }
   };

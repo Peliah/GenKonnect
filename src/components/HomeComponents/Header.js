@@ -4,7 +4,7 @@ import React, {useState} from 'react'
 import { useNavigation } from '@react-navigation/native';
 import BottomSheetModal from '../DashboardComponents/BottomSheetModal';
 import Client from '../../api/Client';
-const Header = ({iconName, iconName2, onPress, generator_route}) => {
+const Header = ({iconName, iconName2, onPress, generator_route, header}) => {
     const navigation = useNavigation();
     // console.log(typeof generator_route)
     const [isBottomSheetVisible, setBottomSheetVisible] = useState(false);
@@ -57,7 +57,7 @@ const Header = ({iconName, iconName2, onPress, generator_route}) => {
                 <Icon name={iconName} color={'grey'} size={25}  />
             </TouchableOpacity>
             <View>
-                <Text style={styles.title}>Header</Text>
+                <Text style={styles.title}>{header}</Text>
             </View>
             <TouchableOpacity onPress={toggleBottomSheet}>
                 <Icon name={iconName2} size={25}/>

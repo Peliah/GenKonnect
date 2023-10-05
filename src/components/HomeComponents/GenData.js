@@ -6,12 +6,16 @@ const GenData = ({genData}) => {
   return (
     <View style={styles.container}>
         <View>
-            <Text>Fuel Status:  <Text>{genData.genId.fuel}</Text>%</Text>
-            <Text>Oil Status:  <Text>{genData.genId.fuel}</Text>%</Text>
+            {/* <Text>Fuel Status:  <Text>{genData.genId.fuel}</Text>%</Text>
+            <Text>Oil Status:  <Text>{genData.genId.fuel}</Text>%</Text> */}
+            <Text>Fuel Status:  <Text>{}</Text>%</Text>
+            <Text>Oil Status:  <Text>{}</Text>%</Text>
         </View>
         <View>
+            {/* <Text>Energy Consumption:  <Text>20</Text>KV</Text>
+            <Text>Power Output:  <Text>{genData.genId.PowerOutPut}</Text></Text> */}
             <Text>Energy Consumption:  <Text>20</Text>KV</Text>
-            <Text>Power Output:  <Text>{genData.genId.PowerOutPut}</Text></Text>
+            <Text>Power Output:  <Text>{}</Text></Text>
         </View>
     </View>
   )

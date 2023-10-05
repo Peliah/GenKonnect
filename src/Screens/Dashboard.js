@@ -6,7 +6,9 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import GenList from '../components/DashboardComponents/GenList';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Client from '../api/Client';
-import BottomSheetModal from '../components/DashboardComponents/BottomSheetModal';
+// import BottomSheetModal from '../components/DashboardComponents/BottomSheetModal';
+import { useFocusEffect } from '@react-navigation/native';
+
 
 const Dashboard = ({ navigation }) => {
   const dimension = useWindowDimensions()
@@ -25,49 +27,87 @@ const Dashboard = ({ navigation }) => {
     }
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const token = await AsyncStorage.getItem('userToken');
-         console.log("token: "+token);
-        
-        if (token) {
-    fetchCurrentState()
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchData = async () => {
+        try {
+          const token = await AsyncStorage.getItem('userToken');
 
+          if (token) {
+            const response = await Client.get('/listgen', {
+              headers: {
+                token: `Bearer ${token}`,
+              },
+            });
 
-          const response = await Client.get('/listgen', {
-            headers: {
-              token: `Bearer ${token}`,
-            },
-          });
-          console.log("Response Data:", response.data);
-          // if (response.data) {
-          if (response.data && response.data.owned && response.data.owned.length > 0) {
-            console.log("Respos.data ",response.data.owned[0].GenKonId)
-            const genData = response.data.owned[0].GenKonId;
-            setGens(genData);
-            console.log("My Gens " + genData);
-          } else {
-            console.log("No data found in response or unexpected response structure.");
+            if (response.data && response.data.owned && response.data.owned.length > 0) {
+              const genData = response.data.owned[0].GenKonId;
+              setGens(genData);
+            } else {
+              console.log("No data found in response or unexpected response structure.");
+            }
+
+            if (response.data && response.data.shared && response.data.shared.length > 0) {
+              const genDataShared = response.data.shared[0].GenKonId;
+              setSharedGens(genDataShared);
+            } else {
+              console.log("No data found in response or unexpected response structure.");
+            }
           }
-
-          if (response.data && response.data.shared && response.data.shared.length > 0) {
-            const genDataShared = response.data.shared[0].GenKonId;
-            setSharedGens(genDataShared);
-            console.log("Shared Gens " + genDataShared);
-          } else {
-            console.log("No data found in response or unexpected response structure.");
-          }
+        } catch (error) {
+          console.error('Error Fetching data ', error);
         }
-      } catch (error) {
-        console.error('Error Fetching data ', error);
-      }
-    };
+      };
 
-    fetchData();
-    console.log(gens)
-    console.log(sharedGens)
-  }, []);
+      // Call your fetchData function when the screen gains focus
+      fetchData();
+    }, [])
+  )
+  
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const token = await AsyncStorage.getItem('userToken');
+  //        console.log("token: "+token);
+        
+  //       if (token) {
+  //   fetchCurrentState()
+
+
+  //         const response = await Client.get('/listgen', {
+  //           headers: {
+  //             token: `Bearer ${token}`,
+  //           },
+  //         });
+  //         console.log("Response Data:", response.data);
+  //         // if (response.data) {
+  //         if (response.data && response.data.owned && response.data.owned.length > 0) {
+  //           console.log("Respos.data ",response.data.owned[0].GenKonId)
+  //           const genData = response.data.owned[0].GenKonId;
+  //           setGens(genData);
+  //           console.log("My Gens " + genData);
+  //         } else {
+  //           console.log("No data found in response or unexpected response structure.");
+  //         }
+
+  //         if (response.data && response.data.shared && response.data.shared.length > 0) {
+  //           const genDataShared = response.data.shared[0].GenKonId;
+  //           setSharedGens(genDataShared);
+  //           console.log("Shared Gens " + genDataShared);
+  //         } else {
+  //           console.log("No data found in response or unexpected response structure.");
+  //         }
+  //       }
+  //     } catch (error) {
+  //       console.error('Error Fetching data ', error);
+  //     }
+  //   };
+
+  //   fetchData();
+  //   console.log(gens)
+  //   console.log(sharedGens)
+  // }, []);
 
   const generatorData = [
     {
